@@ -31,7 +31,7 @@ $ export SLACK_API_TOKEN="YOUR SLACK API TOKEN"
 Then, execute `takosan` command.
 
 ```
-$ takosan [-host string] [-port int]
+$ takosan [-host string] [-port int] [-name string]
 ```
 
 ## Options
@@ -43,6 +43,10 @@ The interface which `takosan` binds.
 ### `-port` (default: 4979)
 
 The port to which `takosan` listens.
+
+### `-name` (default: "takosan")
+
+The name which you want to display on Slack for this bot.
 
 ## License
 
