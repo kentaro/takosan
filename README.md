@@ -1,14 +1,18 @@
 # Takosan
 
-Ikachan for Slack.
+Takosan is a simple interface to Slack (Ikachan for Slack).
 
 ## Installing
+
+Just `go get` as below:
 
 ```
 $ go get github.com/kentaro/takosan
 ```
 
 ## Dependencies
+
+You have to also `go get` dependencies as below:
 
 ```
 $ go get github.com/go-martini/martini
@@ -27,9 +31,23 @@ $ export SLACK_API_TOKEN="YOUR SLACK API TOKEN"
 Then, execute `takosan` command.
 
 ```
-$ takosan
+$ takosan [-host string] [-port int]
 ```
+
+## Options
+
+### `-host` (default: "127.0.0.1")
+
+The interface which `takosan` binds.
+
+### `-port` (default: 4979)
+
+The port to which `takosan` listens.
 
 ## License
 
 MIT
+
+## Author
+
+[Kentaro Kuribayashi](http://kentarok.org)
