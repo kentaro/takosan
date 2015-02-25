@@ -1,6 +1,6 @@
 # Takosan
 
-Takosan is a simple interface to Slack ([Ikachan](https://github.com/yappo/p5-App-Ikachan) for Slack).
+Takosan is a simple Web interface to Slack ([Ikachan](https://github.com/yappo/p5-App-Ikachan) for Slack).
 
 ## Installing
 
