@@ -1,0 +1,2 @@
+# takosan
+Ikachan for Slack
