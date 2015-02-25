@@ -7,6 +7,8 @@ import (
 )
 
 type Httpd struct {
+	Host string
+	Port int
 }
 
 type Param struct {
@@ -14,15 +16,18 @@ type Param struct {
 	Message string `form:"message"`
 }
 
-func NewHttpd() *Httpd {
-	return &Httpd{}
+func NewHttpd(host string, port int) *Httpd {
+	return &Httpd{
+		Host: host,
+		Port: port,
+	}
 }
 
 func (h *Httpd) Run() {
 	m := martini.Classic()
 	m.Post("/notice", binding.Bind(Param{}), messageHandler)
 	m.Post("/privmsg", binding.Bind(Param{}), messageHandler)
-	m.RunOnAddr(":8080")
+	m.RunOnAddr(fmt.Sprintf("%s:%d", h.Host, h.Port))
 }
 
 func messageHandler(p Param) string {
