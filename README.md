@@ -22,7 +22,7 @@ $ go get github.com/nlopes/slack
 
 ## Usage
 
-First, set your Slack API token
+First, set your Slack API token.
 
 ```
 $ export SLACK_API_TOKEN="YOUR SLACK API TOKEN"
