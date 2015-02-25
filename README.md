@@ -1,6 +1,6 @@
 # Takosan
 
-Takosan is a simple interface to Slack (Ikachan for Slack).
+Takosan is a simple interface to Slack ([Ikachan](https://github.com/yappo/p5-App-Ikachan) for Slack).
 
 ## Installing
 
@@ -47,6 +47,22 @@ The port to which `takosan` listens.
 ### `-name` (default: "takosan")
 
 The name which you want to display on Slack for this bot.
+
+## API
+
+### `/notice`
+### `/privmsg`
+
+```
+$ curl -d "channel=#channel&message=test message" localhost:4979/privmsg
+```
+
+You can use both of the endpoints to send messages to Slack. No change can be seen on Slack, though.
+
+### `/join`
+### `/leave`
+
+When you post requests to these endpoints, the server always returns 404. Which is because you don't need to join/leave groups on Slack explicitely.
 
 ## License
 
