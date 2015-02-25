@@ -28,7 +28,7 @@ First, set your Slack API token
 $ export SLACK_API_TOKEN="YOUR SLACK API TOKEN"
 ```
 
-Then, execute `takosan` command.
+Then, execute `takosan` command like below:
 
 ```
 $ takosan [-host string] [-port int] [-name string]
