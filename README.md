@@ -62,7 +62,7 @@ You can use both of the endpoints to send messages to Slack. No change can be se
 ### `/join`
 ### `/leave`
 
-When you post requests to these endpoints, the server always returns 404. Which is because you don't need to join/leave groups on Slack explicitely.
+When you post requests to these endpoints, the server always returns `404`. Which is because you don't need to join/leave groups on Slack explicitely.
 
 ## License
 
