@@ -32,7 +32,7 @@ func (h *Httpd) Run() {
 }
 
 func messageHandler(p Param) (int, string) {
-	ch := make(chan error)
+	ch := make(chan error, 1)
 	go MessageBus.Publish(NewMessage(p.Channel, p.Message, ch))
 	err := <-ch
 
