@@ -1,13 +1,15 @@
 package main
 
 type Message struct {
-	Channel string
-	Body    string
+	Group  string
+	Body   string
+	Result chan error
 }
 
-func NewMessage(channel, body string) *Message {
+func NewMessage(group, body string, ch chan error) *Message {
 	return &Message{
-		Channel: channel,
-		Body:    body,
+		Group:  group,
+		Body:   body,
+		Result: ch,
 	}
 }

@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/nlopes/slack"
-	"log"
 )
 
 type Slack struct {
@@ -17,16 +16,14 @@ func NewSlack(name, token string) *Slack {
 	}
 }
 
-func (s *Slack) onMessage(message *Message) {
+func (s *Slack) onMessage(message *Message) error {
 	_, _, err := s.Client.PostMessage(
-		message.Channel,
+		message.Group,
 		message.Body,
 		slack.PostMessageParameters{
 			Username: s.Name,
 		},
 	)
 
-	if err != nil {
-		log.Printf("[error] Failed to send message to %s: %s\n", message.Channel, err)
-	}
+	return err
 }

@@ -5,7 +5,7 @@ type Bus struct {
 }
 
 type Subscriber interface {
-	onMessage(message *Message)
+	onMessage(message *Message) error
 }
 
 var MessageBus = &Bus{
@@ -20,7 +20,8 @@ func (b Bus) Subscribe(subscriber Subscriber) {
 	go func() {
 		for {
 			message := <-b.queue
-			subscriber.onMessage(message)
+			err := subscriber.onMessage(message)
+			message.Result <- err
 		}
 	}()
 }

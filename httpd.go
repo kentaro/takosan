@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/binding"
+	"log"
 )
 
 type Httpd struct {
@@ -30,7 +31,17 @@ func (h *Httpd) Run() {
 	m.RunOnAddr(fmt.Sprintf("%s:%d", h.Host, h.Port))
 }
 
-func messageHandler(p Param) string {
-	go MessageBus.Publish(NewMessage(p.Channel, p.Message))
-	return fmt.Sprintf("message sent channel: %s %s", p.Channel, p.Message)
+func messageHandler(p Param) (int, string) {
+	ch := make(chan error)
+	go MessageBus.Publish(NewMessage(p.Channel, p.Message, ch))
+	err := <-ch
+
+	if err != nil {
+		message := fmt.Sprintf("Failed to send message to %s: %s\n", p.Channel, err)
+		log.Printf(message)
+		return 400, fmt.Sprintf("[error] %s", message)
+	} else {
+		return 200, fmt.Sprintf("message sent channel: %s", p.Channel)
+
+	}
 }
