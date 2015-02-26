@@ -2,6 +2,8 @@
 
 Takosan is a simple Web interface to Slack ([Ikachan](https://github.com/yappo/p5-App-Ikachan) for Slack).
 
+![](./takosan.jpg)
+
 ## Installing
 
 ### For Users
@@ -58,6 +60,10 @@ The port to which `takosan` listens.
 ### `-name` (default: "takosan")
 
 The name which you want to display on Slack for this bot.
+
+### `-icon` (default: the URL of the image above)
+
+The icon URL which you want to display on Slack for this bot.
 
 ## API
 

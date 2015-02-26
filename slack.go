@@ -6,12 +6,14 @@ import (
 
 type Slack struct {
 	Name   string
+	Icon   string
 	Client *slack.Slack
 }
 
-func NewSlack(name, token string) *Slack {
+func NewSlack(name, icon, token string) *Slack {
 	return &Slack{
 		Name:   name,
+		Icon:   icon,
 		Client: slack.New(token),
 	}
 }
@@ -22,6 +24,7 @@ func (s *Slack) onMessage(message *Message) error {
 		message.Body,
 		slack.PostMessageParameters{
 			Username: s.Name,
+			IconURL:  s.Icon,
 		},
 	)
 
