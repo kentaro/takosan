@@ -38,10 +38,9 @@ func messageHandler(p Param) (int, string) {
 
 	if err != nil {
 		message := fmt.Sprintf("Failed to send message to %s: %s\n", p.Channel, err)
-		log.Printf(message)
-		return 400, fmt.Sprintf("[error] %s", message)
+		log.Printf(fmt.Sprintf("[error] %s", message))
+		return 400, message
 	} else {
-		return 200, fmt.Sprintf("message sent channel: %s", p.Channel)
-
+		return 200, fmt.Sprintf("Message sent successfully to %s", p.Channel)
 	}
 }
