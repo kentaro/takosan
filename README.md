@@ -11,7 +11,7 @@ Takosan is a simple Web interface to Slack ([Ikachan](https://github.com/yappo/p
 You can choose and get binaries from the [releases](https://github.com/kentaro/takosan/releases) like below:
 
 ```
-$ wget https://github.com/kentaro/takosan/releases/download/v1.0.1/takosan_linux_amd64 -O takosan
+$ wget https://github.com/kentaro/takosan/releases/download/v1.0.2/takosan_linux_amd64 -O takosan
 $ chmod +x takosan
 ```
 
