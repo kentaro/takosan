@@ -26,6 +26,7 @@ func (b Bus) Subscribe(subscriber Subscriber) {
 			message := <-b.queue
 
 			// To comply with API rate limit requirement
+			// https://api.slack.com/docs/rate-limits
 			done := make(chan interface{}, 1)
 			go func() {
 				done <- time.After(1 * time.Second)
