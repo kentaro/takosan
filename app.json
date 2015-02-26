@@ -1,0 +1,11 @@
+{
+  "name": "takosan",
+  "description": "Takosan is a simple Web interface to Slack (Ikachan for Slack).",
+  "repository": "https://github.com/kentaro/takosan",
+  "env": {
+    "BUILDPACK_URL": "https://github.com/kr/heroku-buildpack-go.git",
+    "SLACK_API_TOKEN": {
+      "description": "Your Slack API token"
+    }
+  }
+}
