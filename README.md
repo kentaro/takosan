@@ -33,6 +33,10 @@ $ go get github.com/martini-contrib/binding
 $ go get github.com/nlopes/slack
 ```
 
+### Deploy to Heroku
+
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
 ## Usage
 
 First, set your Slack API token.
