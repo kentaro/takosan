@@ -44,7 +44,7 @@ $ export SLACK_API_TOKEN="YOUR SLACK API TOKEN"
 Then, execute `takosan` command like below:
 
 ```
-$ takosan [-host string] [-port int] [-name string]
+$ takosan [-host string] [-port int] [-name string] [-icon string]
 ```
 
 ## Options
