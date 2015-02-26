@@ -4,13 +4,24 @@ Takosan is a simple Web interface to Slack ([Ikachan](https://github.com/yappo/p
 
 ## Installing
 
+### For Users
+
+You can choose and get binaries from the [releases](https://github.com/kentaro/takosan/releases) like below:
+
+```
+$ wget https://github.com/kentaro/takosan/releases/download/v1.0.0/takosan_linux_amd64 -O takosan
+$ chmod +x takosan
+```
+
+### For Developers
+
 Just `go get` as below:
 
 ```
 $ go get github.com/kentaro/takosan
 ```
 
-## Dependencies
+#### Dependencies
 
 You have to also `go get` dependencies as below:
 
