@@ -25,4 +25,3 @@ _testmain.go
 
 takosan
 pkg/*
-!pkg/.keep
