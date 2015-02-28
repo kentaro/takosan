@@ -23,8 +23,9 @@ func (s *Slack) onMessage(message *Message) error {
 		message.Group,
 		message.Body,
 		slack.PostMessageParameters{
-			Username: s.Name,
-			IconURL:  s.Icon,
+			Username:  s.Name,
+			IconURL:   s.Icon,
+			LinkNames: 1,
 		},
 	)
 
