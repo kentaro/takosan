@@ -13,7 +13,7 @@ _Illustrated by [@demiflare168](https://twitter.com/demiflare168)_
 You can choose and get binaries from the [releases](https://github.com/kentaro/takosan/releases) like below:
 
 ```
-$ wget https://github.com/kentaro/takosan/releases/download/v1.0.2/takosan_linux_amd64 -O takosan
+$ wget https://github.com/kentaro/takosan/releases/download/v1.0.3/takosan_linux_amd64 -O takosan
 $ chmod +x takosan
 ```
 
