@@ -26,6 +26,7 @@ func NewHttpd(host string, port int) *Httpd {
 
 func (h *Httpd) Run() {
 	m := martini.Classic()
+	m.Get("/", func() string { return "Hello, I'm Takosan!!1" })
 	m.Post("/notice", binding.Bind(Param{}), messageHandler)
 	m.Post("/privmsg", binding.Bind(Param{}), messageHandler)
 	m.RunOnAddr(fmt.Sprintf("%s:%d", h.Host, h.Port))
