@@ -13,8 +13,21 @@ type Httpd struct {
 }
 
 type Param struct {
-	Channel string `form:"channel" binding:"required"`
-	Message string `form:"message"`
+	Channel    string `form:"channel" binding:"required"`
+	Message    string `form:"message"`
+	Name       string `form:"name"`
+	Icon       string `form:"icon"`
+	Color      string `form:"color"`
+	Pretext    string `form:"pretext"`
+	AuthorName string `form:"author_name"`
+	AuthorLink string `form:"author_link"`
+	AuthorIcon string `form:"author_icon"`
+	Title      string `form:"title"`
+	TitleLink  string `form:"title_link"`
+	Text       string `form:"text"`
+	ImageURL   string `form:"image_url"`
+	Parse      string `form:"parse"`
+	Manual     bool   `form:"manual"`
 }
 
 func NewHttpd(host string, port int) *Httpd {
@@ -34,7 +47,23 @@ func (h *Httpd) Run() {
 
 func messageHandler(p Param) (int, string) {
 	ch := make(chan error, 1)
-	go MessageBus.Publish(NewMessage(p.Channel, p.Message, ch))
+
+	newMessage := NewMessage(p.Channel, p.Message, ch)
+	newMessage.Name = p.Name
+	newMessage.Icon = p.Icon
+	newMessage.Color = p.Color
+	newMessage.Pretext = p.Pretext
+	newMessage.AuthorName = p.AuthorName
+	newMessage.AuthorLink = p.AuthorLink
+	newMessage.AuthorIcon = p.AuthorIcon
+	newMessage.Title = p.Title
+	newMessage.TitleLink = p.TitleLink
+	newMessage.Text = p.Text
+	newMessage.ImageURL = p.ImageURL
+	newMessage.Parse = p.Parse
+	newMessage.Manual = p.Manual
+
+	go MessageBus.Publish(newMessage)
 	err := <-ch
 
 	if err != nil {
