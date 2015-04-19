@@ -20,59 +20,41 @@ func NewSlack(name, icon, token string) *Slack {
 }
 
 func (s *Slack) onMessage(message *Message) error {
+	fields := make([]slack.AttachmentField, len(message.Attachment.Fields))
+	for i := range fields {
+		fields[i].Title = message.Attachment.Fields[i].Title
+		fields[i].Value = message.Attachment.Fields[i].Value
+		fields[i].Short = message.Attachment.Fields[i].Short
+	}
+
+	attachment := slack.Attachment{
+		Fallback:   message.Attachment.Fallback,
+		Color:      message.Attachment.Color,
+		Pretext:    message.Attachment.Pretext,
+		AuthorName: message.Attachment.AuthorName,
+		AuthorLink: message.Attachment.AuthorLink,
+		AuthorIcon: message.Attachment.AuthorIcon,
+		Title:      message.Attachment.Title,
+		TitleLink:  message.Attachment.TitleLink,
+		Text:       message.Attachment.Text,
+		Fields:     fields,
+		ImageURL:   message.Attachment.ImageURL,
+		// MarkdownIn: []string{"text", "pretext", "fields"},
+	}
+
 	postMessage := slack.PostMessageParameters{
-		LinkNames: 1,
+		Username:    message.Name,
+		Attachments: []slack.Attachment{attachment},
+		LinkNames:   1,
 	}
 
-	// Set bot name
-	if message.Name != "" {
-		postMessage.Username = message.Name
-	} else {
-		postMessage.Username = s.Name
-	}
-
-	// Set bot Icon
-	iconString := ""
-	if message.Icon != "" {
-		iconString = message.Icon
-	} else {
-		iconString = s.Icon
-	}
-
-	// Switch IconURL or IconEmoji
 	re := regexp.MustCompile("^:.*:$")
-	if re.MatchString(iconString) {
-		postMessage.IconEmoji = iconString
+	if re.MatchString(message.Icon) {
+		postMessage.IconEmoji = message.Icon
 	} else {
-		postMessage.IconURL = iconString
+		postMessage.IconURL = message.Icon
 	}
 
-	messageText := message.Body
-	attachment := slack.Attachment{}
-
-	attachment.Color = message.Color
-	attachment.Pretext = message.Pretext
-	attachment.AuthorName = message.AuthorName
-	attachment.AuthorLink = message.AuthorLink
-	attachment.AuthorIcon = message.AuthorIcon
-	attachment.Text = message.Text
-	attachment.Fallback = message.Text
-	attachment.Title = message.Title
-	attachment.TitleLink = message.TitleLink
-	attachment.ImageURL = message.ImageURL
-
-	// Automatic actions
-	if message.Manual == false {
-		if attachment.Color != "" && message.Body != "" && message.Text == "" {
-			messageText = ""
-			attachment.Text = message.Body
-			attachment.Fallback = message.Body
-		}
-	}
-
-	postMessage.Attachments = []slack.Attachment{attachment}
-	postMessage.Parse = message.Parse
-
-	_, _, err := s.Client.PostMessage(message.Group, messageText, postMessage)
+	_, _, err := s.Client.PostMessage(message.Channel, message.Message, postMessage)
 	return err
 }
