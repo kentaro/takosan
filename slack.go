@@ -39,7 +39,7 @@ func (s *Slack) onMessage(message *Message) error {
 		Text:       message.Attachment.Text,
 		Fields:     fields,
 		ImageURL:   message.Attachment.ImageURL,
-		// MarkdownIn: []string{"text", "pretext", "fields"},
+		MarkdownIn: []string{"text", "pretext", "fields"},
 	}
 
 	postMessage := slack.PostMessageParameters{
