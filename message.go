@@ -30,34 +30,66 @@ type Field struct {
 	Short bool
 }
 
+func (p *Param) HasAttachment() bool {
+	if (p.Text != "") ||
+		(p.Color != "") ||
+		(p.Fallback != "") ||
+		(p.Pretext != "") ||
+		(p.AuthorName != "") ||
+		(p.AuthorLink != "") ||
+		(p.AuthorIcon != "") ||
+		(p.Title != "") ||
+		(p.TitleLink != "") ||
+		(p.ImageURL != "") ||
+		(len(p.FieldTitle) > 0) ||
+		(len(p.FieldValue) > 0) {
+		return true
+	}
+
+	return false
+}
+
+func (p *Param) HasField() bool {
+	if (len(p.FieldTitle) > 0) || (len(p.FieldValue) > 0) {
+		return true
+	}
+
+	return false
+}
+
+func (p *Param) Adjust() {
+	if p.Name == "" {
+		p.Name = name
+	}
+	if p.Icon == "" {
+		p.Icon = icon
+	}
+
+	if p.Manual == false {
+		if p.Message != "" && p.Text == "" && p.Color != "" {
+			p.Text = p.Message
+			p.Message = ""
+		}
+		if p.Text != "" && p.Fallback == "" {
+			p.Fallback = p.Text
+		}
+	}
+}
+
 func NewMessage(p Param, ch chan error) *Message {
-	attachment := NewAttachment(p)
+	p.Adjust()
 
 	message := Message{
-		Channel:    p.Channel,
-		Message:    p.Message,
-		Name:       p.Name,
-		Icon:       p.Icon,
-		Attachment: attachment,
-		Manual:     p.Manual,
-		Result:     ch,
+		Channel: p.Channel,
+		Message: p.Message,
+		Name:    p.Name,
+		Icon:    p.Icon,
+		Manual:  p.Manual,
+		Result:  ch,
 	}
 
-	if message.Name == "" {
-		message.Name = name
-	}
-	if message.Icon == "" {
-		message.Icon = icon
-	}
-
-	if message.Manual == false {
-		if message.Message != "" && attachment.Text == "" && attachment.Color != "" {
-			attachment.Text = message.Message
-			message.Message = ""
-		}
-		if attachment.Text != "" && attachment.Fallback == "" {
-			attachment.Fallback = attachment.Text
-		}
+	if p.HasAttachment() {
+		message.Attachment = NewAttachment(p)
 	}
 
 	return &message
@@ -77,7 +109,9 @@ func NewAttachment(p Param) *Attachment {
 		ImageURL:   p.ImageURL,
 	}
 
-	attachment.Fields = NewFields(p)
+	if p.HasField() {
+		attachment.Fields = NewFields(p)
+	}
 
 	return &attachment
 }
