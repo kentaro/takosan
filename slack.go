@@ -20,32 +20,9 @@ func NewSlack(name, icon, token string) *Slack {
 }
 
 func (s *Slack) onMessage(message *Message) error {
-	fields := make([]slack.AttachmentField, len(message.Attachment.Fields))
-	for i := range fields {
-		fields[i].Title = message.Attachment.Fields[i].Title
-		fields[i].Value = message.Attachment.Fields[i].Value
-		fields[i].Short = message.Attachment.Fields[i].Short
-	}
-
-	attachment := slack.Attachment{
-		Fallback:   message.Attachment.Fallback,
-		Color:      message.Attachment.Color,
-		Pretext:    message.Attachment.Pretext,
-		AuthorName: message.Attachment.AuthorName,
-		AuthorLink: message.Attachment.AuthorLink,
-		AuthorIcon: message.Attachment.AuthorIcon,
-		Title:      message.Attachment.Title,
-		TitleLink:  message.Attachment.TitleLink,
-		Text:       message.Attachment.Text,
-		Fields:     fields,
-		ImageURL:   message.Attachment.ImageURL,
-		MarkdownIn: []string{"text", "pretext", "fields"},
-	}
-
 	postMessage := slack.PostMessageParameters{
-		Username:    message.Name,
-		Attachments: []slack.Attachment{attachment},
-		LinkNames:   1,
+		Username:  message.Name,
+		LinkNames: 1,
 	}
 
 	re := regexp.MustCompile("^:.*:$")
@@ -53,6 +30,32 @@ func (s *Slack) onMessage(message *Message) error {
 		postMessage.IconEmoji = message.Icon
 	} else {
 		postMessage.IconURL = message.Icon
+	}
+
+	if message.Attachment != nil {
+		attachment := slack.Attachment{
+			Fallback:   message.Attachment.Fallback,
+			Color:      message.Attachment.Color,
+			Pretext:    message.Attachment.Pretext,
+			AuthorName: message.Attachment.AuthorName,
+			AuthorLink: message.Attachment.AuthorLink,
+			AuthorIcon: message.Attachment.AuthorIcon,
+			Title:      message.Attachment.Title,
+			TitleLink:  message.Attachment.TitleLink,
+			Text:       message.Attachment.Text,
+			ImageURL:   message.Attachment.ImageURL,
+			MarkdownIn: []string{"text", "pretext", "fields"},
+		}
+		if len(message.Attachment.Fields) > 0 {
+			fields := make([]slack.AttachmentField, len(message.Attachment.Fields))
+			for i := range fields {
+				fields[i].Title = message.Attachment.Fields[i].Title
+				fields[i].Value = message.Attachment.Fields[i].Value
+				fields[i].Short = message.Attachment.Fields[i].Short
+			}
+			attachment.Fields = fields
+		}
+		postMessage.Attachments = []slack.Attachment{attachment}
 	}
 
 	_, _, err := s.Client.PostMessage(message.Channel, message.Message, postMessage)
