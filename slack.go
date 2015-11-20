@@ -8,7 +8,7 @@ import (
 type Slack struct {
 	Name   string
 	Icon   string
-	Client *slack.Slack
+	Client *slack.Client
 }
 
 func NewSlack(name, icon, token string) *Slack {
