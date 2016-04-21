@@ -60,13 +60,13 @@ func messageHandler(p Param) (int, string) {
 	postTime, err := time.Parse(dateFormat, p.PostAt)
 
 	if err != nil {
-		return sendSync(p, ch)
+		return sendNow(p, ch)
 	} else {
-		return sendAsync(p, postTime, ch)
+		return sendLater(p, postTime, ch)
 	}
 }
 
-func sendSync(p Param, ch chan error) (int, string) {
+func sendNow(p Param, ch chan error) (int, string) {
 	go MessageBus.Publish(NewMessage(p, ch), 0)
 	err := <-ch
 
@@ -79,7 +79,7 @@ func sendSync(p Param, ch chan error) (int, string) {
 	}
 }
 
-func sendAsync(p Param, postTime time.Time, ch chan error) (int, string) {
+func sendLater(p Param, postTime time.Time, ch chan error) (int, string) {
 	delay := int64(math.Max(float64(postTime.Unix()-time.Now().UTC().Unix()), 0))
 
 	go MessageBus.Publish(NewMessage(p, ch), delay)
