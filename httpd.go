@@ -5,6 +5,8 @@ import (
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/binding"
 	"log"
+	"math"
+	"time"
 )
 
 type Httpd struct {
@@ -51,7 +53,21 @@ func (h *Httpd) Run() {
 
 func messageHandler(p Param) (int, string) {
 	ch := make(chan error, 1)
-	go MessageBus.Publish(NewMessage(p, ch))
+
+	// The format is compat with JavaScript's date.toISOString().
+	// It expects the time is represented in UTC.
+	dateFormat := "2006-01-02T15:04:05.000Z"
+	postTime, err := time.Parse(dateFormat, p.PostAt)
+
+	if err != nil {
+		return sendSync(p, ch)
+	} else {
+		return sendAsync(p, postTime, ch)
+	}
+}
+
+func sendSync(p Param, ch chan error) (int, string) {
+	go MessageBus.Publish(NewMessage(p, ch), 0)
 	err := <-ch
 
 	if err != nil {
@@ -61,4 +77,12 @@ func messageHandler(p Param) (int, string) {
 	} else {
 		return 200, fmt.Sprintf("Message sent successfully to %s", p.Channel)
 	}
+}
+
+func sendAsync(p Param, postTime time.Time, ch chan error) (int, string) {
+	delay := int64(math.Max(float64(postTime.Unix()-time.Now().UTC().Unix()), 0))
+
+	go MessageBus.Publish(NewMessage(p, ch), delay)
+
+	return 200, fmt.Sprintf("Message enqueued and will be sent after %d seconds", delay)
 }

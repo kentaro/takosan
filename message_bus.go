@@ -16,7 +16,8 @@ var MessageBus = &Bus{
 	queue: make(chan *Message),
 }
 
-func (b Bus) Publish(message *Message) {
+func (b Bus) Publish(message *Message, delay int64) {
+	time.Sleep(time.Duration(delay) * time.Second)
 	b.queue <- message
 }
 
