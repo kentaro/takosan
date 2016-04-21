@@ -84,5 +84,5 @@ func sendAsync(p Param, postTime time.Time, ch chan error) (int, string) {
 
 	go MessageBus.Publish(NewMessage(p, ch), delay)
 
-	return 200, fmt.Sprintf("Message enqueued and will be sent after %d seconds", delay)
+	return 200, fmt.Sprintf("Message accepted and will be sent after %d seconds", delay)
 }
