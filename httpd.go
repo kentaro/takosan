@@ -31,6 +31,7 @@ type Param struct {
 	FieldShort []bool   `form:"field_short[]"`
 	ImageURL   string   `form:"image_url"`
 	Manual     bool     `form:"manual"`
+	PostAt     string   `form:"post_at"`
 }
 
 func NewHttpd(host string, port int) *Httpd {
