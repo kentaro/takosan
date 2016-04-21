@@ -33,7 +33,7 @@ type Param struct {
 	FieldShort []bool   `form:"field_short[]"`
 	ImageURL   string   `form:"image_url"`
 	Manual     bool     `form:"manual"`
-	PostAt     string   `form:"post_at"`
+	PostAt     int64    `form:"post_at"`
 }
 
 func NewHttpd(host string, port int) *Httpd {
@@ -54,15 +54,13 @@ func (h *Httpd) Run() {
 func messageHandler(p Param) (int, string) {
 	ch := make(chan error, 1)
 
-	// The format is compat with JavaScript's date.toISOString().
-	// It expects the time is represented in UTC.
-	dateFormat := "2006-01-02T15:04:05.000Z"
-	postTime, err := time.Parse(dateFormat, p.PostAt)
+	if p.PostAt > 0 {
+		diff := p.PostAt - time.Now().Unix()
+		delay := int64(math.Max(float64(diff), 0))
 
-	if err != nil {
-		return sendNow(p, ch)
+		return sendLater(p, delay, ch)
 	} else {
-		return sendLater(p, postTime, ch)
+		return sendNow(p, ch)
 	}
 }
 
@@ -79,9 +77,7 @@ func sendNow(p Param, ch chan error) (int, string) {
 	}
 }
 
-func sendLater(p Param, postTime time.Time, ch chan error) (int, string) {
-	delay := int64(math.Max(float64(postTime.Unix()-time.Now().UTC().Unix()), 0))
-
+func sendLater(p Param, delay int64, ch chan error) (int, string) {
 	go MessageBus.Publish(NewMessage(p, ch), delay)
 
 	return 200, fmt.Sprintf("Message accepted and will be sent after %d seconds", delay)
