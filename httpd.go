@@ -5,6 +5,8 @@ import (
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/binding"
 	"log"
+	"math"
+	"time"
 )
 
 type Httpd struct {
@@ -31,6 +33,7 @@ type Param struct {
 	FieldShort []bool   `form:"field_short[]"`
 	ImageURL   string   `form:"image_url"`
 	Manual     bool     `form:"manual"`
+	PostAt     int64    `form:"post_at"`
 }
 
 func NewHttpd(host string, port int) *Httpd {
@@ -50,7 +53,19 @@ func (h *Httpd) Run() {
 
 func messageHandler(p Param) (int, string) {
 	ch := make(chan error, 1)
-	go MessageBus.Publish(NewMessage(p, ch))
+
+	if p.PostAt > 0 {
+		diff := p.PostAt - time.Now().Unix()
+		delay := int64(math.Max(float64(diff), 0))
+
+		return sendLater(p, delay, ch)
+	} else {
+		return sendNow(p, ch)
+	}
+}
+
+func sendNow(p Param, ch chan error) (int, string) {
+	go MessageBus.Publish(NewMessage(p, ch), 0)
 	err := <-ch
 
 	if err != nil {
@@ -60,4 +75,10 @@ func messageHandler(p Param) (int, string) {
 	} else {
 		return 200, fmt.Sprintf("Message sent successfully to %s", p.Channel)
 	}
+}
+
+func sendLater(p Param, delay int64, ch chan error) (int, string) {
+	go MessageBus.Publish(NewMessage(p, ch), delay)
+
+	return 200, fmt.Sprintf("Message accepted and will be sent after %d seconds", delay)
 }
