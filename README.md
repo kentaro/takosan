@@ -13,7 +13,7 @@ _Illustrated by [@demiflare168](https://twitter.com/demiflare168)_
 You can choose and get binaries from the [releases](https://github.com/kentaro/takosan/releases) like below:
 
 ```
-$ wget https://github.com/kentaro/takosan/releases/download/v1.0.9/takosan_linux_amd64 -O takosan
+$ wget https://github.com/kentaro/takosan/releases/download/1.0.9/takosan_linux_amd64 -O takosan
 $ chmod +x takosan
 ```
 
@@ -61,7 +61,7 @@ The name which you want to display on Slack for this bot.
 
 The icon URL which you want to display on Slack for this bot.
 
-See [./httpd.go] for other params.
+See [httpd.go](./httpd.go) for other params.
 
 ## API
 
