@@ -13,7 +13,7 @@ _Illustrated by [@demiflare168](https://twitter.com/demiflare168)_
 You can choose and get binaries from the [releases](https://github.com/kentaro/takosan/releases) like below:
 
 ```
-$ wget https://github.com/kentaro/takosan/releases/download/v1.0.3/takosan_linux_amd64 -O takosan
+$ wget https://github.com/kentaro/takosan/releases/download/v1.0.9/takosan_linux_amd64 -O takosan
 $ chmod +x takosan
 ```
 
@@ -23,16 +23,6 @@ Just `go get` as below:
 
 ```
 $ go get github.com/kentaro/takosan
-```
-
-#### Dependencies
-
-You have to also `go get` dependencies as below:
-
-```
-$ go get github.com/go-martini/martini
-$ go get github.com/martini-contrib/binding
-$ go get github.com/nlopes/slack
 ```
 
 ### Deploy to Heroku
@@ -70,6 +60,8 @@ The name which you want to display on Slack for this bot.
 ### `-icon` (default: the URL of the image above)
 
 The icon URL which you want to display on Slack for this bot.
+
+See [./httpd.go] for other params.
 
 ## API
 
