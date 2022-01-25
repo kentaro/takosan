@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/nlopes/slack"
+	"github.com/slack-go/slack"
 	"regexp"
 )
 
@@ -32,8 +32,9 @@ func (s *Slack) onMessage(message *Message) error {
 		postMessage.IconURL = message.Icon
 	}
 
+	var attachment slack.Attachment
 	if message.Attachment != nil {
-		attachment := slack.Attachment{
+		attachment = slack.Attachment{
 			Fallback:   message.Attachment.Fallback,
 			Color:      message.Attachment.Color,
 			Pretext:    message.Attachment.Pretext,
@@ -55,9 +56,14 @@ func (s *Slack) onMessage(message *Message) error {
 			}
 			attachment.Fields = fields
 		}
-		postMessage.Attachments = []slack.Attachment{attachment}
 	}
 
-	_, _, err := s.Client.PostMessage(message.Channel, message.Message, postMessage)
+	_, _, err := s.Client.PostMessage(
+		message.Channel,
+		slack.MsgOptionText(message.Message, false),
+		slack.MsgOptionAttachments(attachment),
+		slack.MsgOptionPostMessageParameters(postMessage),
+	)
+
 	return err
 }
