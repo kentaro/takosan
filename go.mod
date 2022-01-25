@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/go-martini/martini v0.0.0-20170121215854-22fa46961aab
 	github.com/martini-contrib/binding v0.0.0-20160701174519-05d3e151b6cf
-	github.com/nlopes/slack v0.6.0
+	github.com/slack-go/slack v0.10.1
 )
 
 require (
