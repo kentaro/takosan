@@ -1,5 +1,7 @@
 # Takosan
 
+[![Deploy to Railyard](https://app.railyard.run/deploy/badge)](https://app.railyard.run/deploy?repo=https://github.com/kentaro/takosan)
+
 Takosan is a simple Web interface to Slack ([Ikachan](https://github.com/yappo/p5-App-Ikachan) for Slack).
 
 ![](./takosan.jpg)
